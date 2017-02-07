@@ -19,6 +19,9 @@ public class VentanaPaint extends javax.swing.JFrame {
 
     BufferedImage buffer = null;
     BufferedImage buffer2 = null;
+    Graphics2D bufferGraphics = null;
+    Graphics2D buffer2Graphics = null;
+    Graphics2D lienzoGraphics = null;
     
     Color colorSeleccionado = Color.BLUE;
     
@@ -26,6 +29,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     
     Circulo miCirculo ;
     Cuadrado miCuadrado;
+    Cruz miCruz;
     
     public VentanaPaint() {
         initComponents();
@@ -34,37 +38,35 @@ public class VentanaPaint extends javax.swing.JFrame {
     }
 
     private void inicializaBuffers(){
+        lienzoGraphics = (Graphics2D) lienzo.getGraphics();
         //creo una imagen del mismo ancho y alto que el lienzo
         buffer = (BufferedImage) lienzo.createImage(lienzo.getWidth(),
                 lienzo.getHeight());
         //creo una imagen modificable
-        Graphics2D g2 = buffer.createGraphics();
+        bufferGraphics = buffer.createGraphics();
         //dibujamos un rectangulo blanco del tamaño del lienzo
-        g2.setColor(Color.white);
-        g2.fillRect(0,0, buffer.getWidth(), buffer.getHeight());
+        bufferGraphics.setColor(Color.white);
+        bufferGraphics.fillRect(0,0, buffer.getWidth(), buffer.getHeight());
         
         //inicializo el 2º buffer
         buffer2 = (BufferedImage) lienzo.createImage(lienzo.getWidth(),
                 lienzo.getHeight());
         //creo una imagen modificable
-        g2 = buffer2.createGraphics();
+        buffer2Graphics = buffer2.createGraphics();
         //dibujamos un rectangulo blanco del tamaño del lienzo
-        g2.setColor(Color.white);
-        g2.fillRect(0,0, buffer2.getWidth(), buffer2.getHeight());
+        buffer2Graphics.setColor(Color.white);
+        buffer2Graphics.fillRect(0,0, buffer2.getWidth(), buffer2.getHeight());
     }
     
     @Override
     public void paint(Graphics g){
         super.paint(g);
-            //apuntamos al lienzo
-        Graphics2D g2 = (Graphics2D) lienzo.getGraphics();
-        g2.drawImage(buffer, 0 , 0, null);
+            //dibujamos el buffer sobre el lienzo
+        lienzoGraphics.drawImage(buffer, 0 , 0, null);
     }
     
     
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -82,6 +84,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
 
         jButton2.setText("Aceptar");
         jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -149,7 +152,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         );
         lienzoLayout.setVerticalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 427, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
         );
 
         jButton1.setText("Color");
@@ -173,6 +176,13 @@ public class VentanaPaint extends javax.swing.JFrame {
             }
         });
 
+        jButton7.setText("Cruz");
+        jButton7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton7MousePressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,7 +193,9 @@ public class VentanaPaint extends javax.swing.JFrame {
                 .addComponent(jButton5)
                 .addGap(18, 18, 18)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 280, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 177, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addContainerGap())
         );
@@ -194,8 +206,9 @@ public class VentanaPaint extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lienzo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -203,50 +216,42 @@ public class VentanaPaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lienzoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMousePressed
-       Graphics2D g2 = (Graphics2D) buffer.getGraphics();
         switch(formaSeleccionada){
            case 0: 
                miCirculo = new Circulo(evt.getX(), evt.getY(), 1, colorSeleccionado, true); 
-               miCirculo.dibujate(g2);
+               miCirculo.dibujate(bufferGraphics, evt.getX());
                break;
            case 1: 
                miCuadrado = new Cuadrado(evt.getX(), evt.getY(), 1, colorSeleccionado, true); 
-               miCuadrado.dibujate(g2);
-               break;     
+               miCuadrado.dibujate(bufferGraphics, evt.getX());
+               break;
+           case 2: 
+               miCruz = new Cruz(evt.getX(), evt.getY(), 1, colorSeleccionado, true); 
+               miCruz.dibujate(bufferGraphics, evt.getX());
+               break;    
        }
        repaint(0,0,1,1);
     }//GEN-LAST:event_lienzoMousePressed
 
     private void lienzoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseDragged
-        Graphics2D g2 = (Graphics2D) buffer.getGraphics();
         //borro lo que hubiera en el lienzo
-        g2.drawImage(buffer2, 0, 0, null);
+        bufferGraphics.drawImage(buffer2, 0, 0, null);
 
         switch (formaSeleccionada) {
-            case 0: //dibujo el circulo
-                int radio = Math.abs((int) miCirculo.x - evt.getX());
-                miCirculo.width = radio;
-                miCirculo.height = radio;
-                miCirculo.dibujate(g2);
-                break;
-            case 1: //dibujo el cuadrado
-                int lado = Math.abs((int) miCuadrado.x - evt.getX());
-                miCuadrado.width = lado;
-                miCuadrado.height = lado;
-                miCuadrado.dibujate(g2);
-                break;
+            case 0: miCirculo.dibujate(bufferGraphics, evt.getX());break;
+            case 1: miCuadrado.dibujate(bufferGraphics, evt.getX());break;
+            case 2: miCruz.dibujate(bufferGraphics, evt.getX());break;   
         }
 
-       g2 = (Graphics2D) lienzo.getGraphics();
-       g2.drawImage(buffer, 0 , 0, null);
+       lienzoGraphics.drawImage(buffer, 0 , 0, null);
        repaint(0,0,1,1);
     }//GEN-LAST:event_lienzoMouseDragged
 
     private void lienzoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseReleased
-        Graphics2D g2 = (Graphics2D) buffer2.getGraphics();     
         switch(formaSeleccionada){
-           case 0: miCirculo.dibujate(g2);break;
-           case 1: miCuadrado.dibujate(g2);break;     
+           case 0: miCirculo.dibujate(buffer2Graphics, evt.getX());break;
+           case 1: miCuadrado.dibujate(buffer2Graphics, evt.getX());break; 
+           case 2: miCruz.dibujate(buffer2Graphics, evt.getX());break; 
        }
     }//GEN-LAST:event_lienzoMouseReleased
 
@@ -270,6 +275,10 @@ public class VentanaPaint extends javax.swing.JFrame {
     private void jButton6MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MousePressed
         formaSeleccionada = 0;
     }//GEN-LAST:event_jButton6MousePressed
+
+    private void jButton7MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MousePressed
+        formaSeleccionada = 2;
+    }//GEN-LAST:event_jButton7MousePressed
 
     /**
      * @param args the command line arguments
@@ -312,6 +321,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JPanel lienzo;
