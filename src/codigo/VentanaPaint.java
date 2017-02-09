@@ -227,7 +227,7 @@ public class VentanaPaint extends javax.swing.JFrame {
                break;
            case 2: 
                miCruz = new Cruz(evt.getX(), evt.getY(), 1, colorSeleccionado, true); 
-               miCruz.dibujate(bufferGraphics, evt.getX());
+               miCruz.dibujate(bufferGraphics, evt.getX(), evt.getY());
                break;    
        }
        repaint(0,0,1,1);
@@ -240,7 +240,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         switch (formaSeleccionada) {
             case 0: miCirculo.dibujate(bufferGraphics, evt.getX());break;
             case 1: miCuadrado.dibujate(bufferGraphics, evt.getX());break;
-            case 2: miCruz.dibujate(bufferGraphics, evt.getX());break;   
+            case 2: miCruz.dibujate(bufferGraphics, evt.getX(), evt.getY());break;   
         }
 
        lienzoGraphics.drawImage(buffer, 0 , 0, null);
@@ -251,7 +251,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         switch(formaSeleccionada){
            case 0: miCirculo.dibujate(buffer2Graphics, evt.getX());break;
            case 1: miCuadrado.dibujate(buffer2Graphics, evt.getX());break; 
-           case 2: miCruz.dibujate(buffer2Graphics, evt.getX());break; 
+           case 2: miCruz.dibujate(buffer2Graphics, evt.getX(), evt.getY());break; 
        }
     }//GEN-LAST:event_lienzoMouseReleased
 
