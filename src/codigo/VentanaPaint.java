@@ -244,8 +244,7 @@ public class VentanaPaint extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lienzoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMousePressed
-       miForma = new Forma(evt.getX(), evt.getY(), 
-                new int[numLados], new int[numLados], colorSeleccionado, true, numLados);
+       miForma = new Estrella(evt.getX(), evt.getY(), colorSeleccionado, true);
        repaint(0,0,1,1);
     }//GEN-LAST:event_lienzoMousePressed
 
