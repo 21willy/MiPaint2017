@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JMenu;
 
 /**
  *
@@ -30,7 +31,7 @@ public class VentanaPaint extends javax.swing.JFrame {
 
     Forma miForma;
     
-    int numLados = 0;
+    int numLados = 3;
     
     public VentanaPaint() {
         initComponents();
@@ -41,6 +42,7 @@ public class VentanaPaint extends javax.swing.JFrame {
 
     private void inicializaBuffers(){
         lienzoGraphics = (Graphics2D) lienzo.getGraphics();
+
         //creo una imagen del mismo ancho y alto que el lienzo
         buffer = (BufferedImage) lienzo.createImage(lienzo.getWidth(),
                 lienzo.getHeight());
@@ -58,6 +60,8 @@ public class VentanaPaint extends javax.swing.JFrame {
         //dibujamos un rectangulo blanco del tamaño del lienzo
         buffer2Graphics.setColor(Color.white);
         buffer2Graphics.fillRect(0,0, buffer2.getWidth(), buffer2.getHeight());
+        
+
     }
     
     @Override
@@ -159,6 +163,7 @@ public class VentanaPaint extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        lienzo.setBackground(new java.awt.Color(255, 255, 255));
         lienzo.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
             public void mouseDragged(java.awt.event.MouseEvent evt) {
                 lienzoMouseDragged(evt);
@@ -241,6 +246,11 @@ public class VentanaPaint extends javax.swing.JFrame {
         });
 
         jMenu1.setText("File");
+        jMenu1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jMenu1StateChanged(evt);
+            }
+        });
 
         jMenu3.setText("jMenu3");
         jMenu1.add(jMenu3);
@@ -332,7 +342,7 @@ public class VentanaPaint extends javax.swing.JFrame {
           case 100: miForma = new Circulo(evt.getX(), evt.getY(),colorSeleccionado, true);break;
       }
     
-       repaint(0,0,1,1);
+      // repaint(0,0,1,1);
     }//GEN-LAST:event_lienzoMousePressed
 
     private void lienzoMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseDragged
@@ -340,7 +350,7 @@ public class VentanaPaint extends javax.swing.JFrame {
         bufferGraphics.drawImage(buffer2, 0, 0, null);
         miForma.dibujate(bufferGraphics, evt.getX(), evt.getY());
        lienzoGraphics.drawImage(buffer, 0 , 0, null);
-       repaint(0,0,1,1);
+       //repaint(0,0,1,1);
     }//GEN-LAST:event_lienzoMouseDragged
 
     private void lienzoMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lienzoMouseReleased
@@ -438,6 +448,14 @@ public class VentanaPaint extends javax.swing.JFrame {
             //el usuario ha pulsado en CANCELAR
         }    
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenu1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jMenu1StateChanged
+        JMenu menu = (JMenu) (evt.getSource());
+        System.out.println(menu.isSelected());
+       if (!menu.isSelected()){
+           repaint();
+       }
+    }//GEN-LAST:event_jMenu1StateChanged
 
     /**
      * @param args the command line arguments

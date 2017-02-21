@@ -93,6 +93,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
+          <Events>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jMenu1StateChanged"/>
+          </Events>
           <SubComponents>
             <Menu class="javax.swing.JMenu" name="jMenu3">
               <Properties>
@@ -207,6 +210,11 @@
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="lienzo">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+        </Property>
+      </Properties>
       <Events>
         <EventHandler event="mouseDragged" listener="java.awt.event.MouseMotionListener" parameters="java.awt.event.MouseEvent" handler="lienzoMouseDragged"/>
         <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lienzoMousePressed"/>
